@@ -1,0 +1,23 @@
+.content-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #eee;
+}
+
+.main-content {
+  padding: 24px;
+}
+
+.sidebar {
+  padding: 12px;
+  a {
+    color: black;
+    text-decoration: none;
+  }
+  a:active {
+     color: gray;
+  }
+}
