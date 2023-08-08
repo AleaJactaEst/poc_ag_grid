@@ -4,11 +4,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
-
 import { AgGridModule } from 'ag-grid-angular';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AgBasicTableComponent, AgPaginationTableComponent, AgServerSidePaginationTableComponent, AgFiltersMenuTableComponent } from './components';
+import {
+  AgBasicTableComponent,
+  AgPaginationTableComponent,
+  AgServerSidePaginationTableComponent,
+  AgFiltersMenuTableComponent
+} from './components';
 
 @NgModule({
   declarations: [
