@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   CheckboxSelectionCallbackParams,
-  ColDef,
+  ColDef, GridApi,
   GridReadyEvent,
   HeaderCheckboxSelectionCallbackParams,
-  IGroupCellRendererParams,
+  IGroupCellRendererParams
 } from 'ag-grid-community';
 import { IOlympicData } from './olympic-data.interface';
 
@@ -15,6 +15,8 @@ import { IOlympicData } from './olympic-data.interface';
   styleUrls: ['./ag-pagination-table.component.scss']
 })
 export class AgPaginationTableComponent {
+  private gridApi!: GridApi;
+
   public columnDefs: ColDef[] = [
     {
       field: 'athlete',
@@ -75,11 +77,17 @@ export class AgPaginationTableComponent {
 
   constructor(private http: HttpClient) {}
 
-  onGridReady(params: GridReadyEvent<IOlympicData>) {
+  onGridReady(params: GridReadyEvent<IOlympicData>): void {
     this.http
       .get<IOlympicData[]>(
         'https://www.ag-grid.com/example-assets/olympic-winners.json'
       )
       .subscribe((data) => (this.rowData = data));
+    this.gridApi = params.api;
   }
+
+  onBtnExport(): void {
+    this.gridApi.exportDataAsCsv();
+  }
+
 }
