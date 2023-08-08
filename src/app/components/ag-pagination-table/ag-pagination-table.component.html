@@ -1,9 +1,17 @@
-<button
-  mat-raised-button
-  color="primary"
-  class="button-csv"
-  (click)="onBtnExport()"
->Download CSV export file</button>
+<div class="buttons-wrapper">
+  <button
+    mat-raised-button
+    color="primary"
+    class="button-action"
+    (click)="onBtnExport()"
+  >Download CSV export file</button>
+  <button
+    mat-raised-button
+    color="primary"
+    class="button-action"
+    (click)="getSelectedRows()"
+  >Get selected rows</button>
+</div>
 
 <ag-grid-angular
   pagination
@@ -20,3 +28,6 @@
   [rowData]="rowData"
   (gridReady)="onGridReady($event)"
 ></ag-grid-angular>
+
+<h2>List of selected rows:</h2>
+<pre>{{ selectedRows | json }}</pre>

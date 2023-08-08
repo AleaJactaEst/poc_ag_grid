@@ -1,3 +1,8 @@
-.button-csv {
-  margin-bottom: 15px;
+.buttons-wrapper {
+  display: flex;
+  gap: 15px;
+
+  .button-action {
+    margin-bottom: 15px;
+  }
 }

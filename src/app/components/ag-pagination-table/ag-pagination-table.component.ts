@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   CheckboxSelectionCallbackParams,
-  ColDef, GridApi,
+  ColDef, ColGroupDef, GridApi,
   GridReadyEvent,
   HeaderCheckboxSelectionCallbackParams,
-  IGroupCellRendererParams
+  IGroupCellRendererParams, IRowNode
 } from 'ag-grid-community';
 import { IOlympicData } from './olympic-data.interface';
 
@@ -16,31 +16,42 @@ import { IOlympicData } from './olympic-data.interface';
 })
 export class AgPaginationTableComponent {
   private gridApi!: GridApi;
+  selectedRows: IRowNode<any>[] = [];
 
-  public columnDefs: ColDef[] = [
+  public columnDefs: (ColDef | ColGroupDef)[] = [
     {
-      field: 'athlete',
-      minWidth: 170,
-      checkboxSelection: function (params: CheckboxSelectionCallbackParams) {
-        // we put checkbox on the name if we are not doing grouping
-        return params.columnApi.getRowGroupColumns().length === 0;
-      },
-      headerCheckboxSelection: function (
-        params: HeaderCheckboxSelectionCallbackParams
-      ) {
-        // we put checkbox on the name if we are not doing grouping
-        return params.columnApi.getRowGroupColumns().length === 0;
-      },
+      headerName: 'Athlete Details',
+      children: [
+        {
+          field: 'athlete',
+          minWidth: 170,
+          checkboxSelection: function (params: CheckboxSelectionCallbackParams) {
+            // we put checkbox on the name if we are not doing grouping
+            return params.columnApi.getRowGroupColumns().length === 0;
+          },
+          headerCheckboxSelection: function (
+            params: HeaderCheckboxSelectionCallbackParams
+          ) {
+            // we put checkbox on the name if we are not doing grouping
+            return params.columnApi.getRowGroupColumns().length === 0;
+          },
+        },
+        { field: 'age' },
+        { field: 'country' },
+        { field: 'year' },
+        { field: 'date' },
+        { field: 'sport' },
+      ]
     },
-    { field: 'age' },
-    { field: 'country' },
-    { field: 'year' },
-    { field: 'date' },
-    { field: 'sport' },
-    { field: 'gold' },
-    { field: 'silver' },
-    { field: 'bronze' },
-    { field: 'total' },
+    {
+      headerName: 'Sports Results',
+      children: [
+        { field: 'gold' },
+        { field: 'silver' },
+        { field: 'bronze' },
+        { field: 'total' },
+      ]
+    }
   ];
   public autoGroupColumnDef: ColDef = {
     headerName: 'Group',
@@ -61,9 +72,6 @@ export class AgPaginationTableComponent {
   };
   public defaultColDef: ColDef = {
     editable: true,
-    enableRowGroup: true,
-    enablePivot: true,
-    enableValue: true,
     sortable: true,
     resizable: true,
     filter: true,
@@ -90,4 +98,10 @@ export class AgPaginationTableComponent {
     this.gridApi.exportDataAsCsv();
   }
 
+  // this.gridApi.getSelectedNodes();
+  getSelectedRows(): void {
+    console.log('this.gridApi.getSelectedNodes():', this.gridApi.getSelectedNodes());
+    this.selectedRows =this.gridApi.getSelectedNodes().map(rowNode => rowNode.data);
+    // console.log('this.selectedRows:', this.selectedRows.map(rowNode => rowNode.data));
+  }
 }

@@ -1,8 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
+import { CellClickedEvent, ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
 import { Observable } from 'rxjs';
+
+import { CustomCellComponent } from '../custom-cell/custom-cell.component';
 
 @Component({
   selector: 'app-ag-basic-table',
@@ -13,9 +15,15 @@ export class AgBasicTableComponent {
 
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
-    { field: 'make' },
+    {
+      field: 'make',
+      cellRenderer: CustomCellComponent,
+      cellRendererParams: {
+        icon: 'edit'
+      }
+    },
     { field: 'model' },
-    { field: 'price' }
+    { field: 'price', cellRenderer: (params: ICellRendererParams) => `<span>${ params.value }$</span>` }
   ];
 
   // DefaultColDef sets props common to all Columns

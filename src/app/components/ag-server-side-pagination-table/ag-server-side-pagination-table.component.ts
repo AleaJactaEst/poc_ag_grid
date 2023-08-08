@@ -70,7 +70,6 @@ export class AgServerSidePaginationTableComponent {
     minWidth: 150,
     sortable: true,
     resizable: true,
-    floatingFilter: true,
   };
 
   public rowSelection: 'single' | 'multiple' = 'multiple';
