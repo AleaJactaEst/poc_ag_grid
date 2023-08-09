@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import {
   CheckboxSelectionCallbackParams,
   ColDef, ColGroupDef, GridApi,
@@ -7,6 +8,7 @@ import {
   HeaderCheckboxSelectionCallbackParams,
   IGroupCellRendererParams, IRowNode
 } from 'ag-grid-community';
+
 import { IOlympicData } from './olympic-data.interface';
 
 @Component({
@@ -15,6 +17,7 @@ import { IOlympicData } from './olympic-data.interface';
   styleUrls: ['./ag-pagination-table.component.scss']
 })
 export class AgPaginationTableComponent {
+  rowsPerPage: number[] = [10, 20, 50, 100];
   private gridApi!: GridApi;
   selectedRows: IRowNode<any>[] = [];
 
@@ -103,5 +106,9 @@ export class AgPaginationTableComponent {
     console.log('this.gridApi.getSelectedNodes():', this.gridApi.getSelectedNodes());
     this.selectedRows =this.gridApi.getSelectedNodes().map(rowNode => rowNode.data);
     // console.log('this.selectedRows:', this.selectedRows.map(rowNode => rowNode.data));
+  }
+
+  amountOfRows(amountOfRows: MatSelectChange) {
+    this.gridApi.paginationSetPageSize(Number(amountOfRows.value));
   }
 }

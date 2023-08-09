@@ -1,6 +1,18 @@
 <p [ngStyle]="{ fontWeight: '500', fontSize: '20px' }">
-  Warning: Enterprise Subscription required for enabling "Sidebar" accessory.(Check console for logs)
+  Warning: Enterprise Subscription required for enabling
+  <a href="https://www.ag-grid.com/angular-data-grid/side-bar/" target="_blank">Sidebar</a>
+  accessory.(Check console for logs)
 </p>
+<p [ngStyle]="{ fontSize: '18px' }">
+  We can modify columnDefs input dynamically and update the table view accordingly. See example below.
+</p>
+
+<mat-form-field>
+  <mat-label>Columns</mat-label>
+  <mat-select class="capitalizer" [formControl]="columns" multiple>
+    <mat-option class="capitalizer" *ngFor="let topping of columnsList" [value]="topping">{{ topping.field }}</mat-option>
+  </mat-select>
+</mat-form-field>
 
 <ag-grid-angular
   style="width: 100%; height: 80%;"

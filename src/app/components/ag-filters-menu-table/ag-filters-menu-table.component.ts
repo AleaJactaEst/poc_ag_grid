@@ -1,20 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { IOlympicData } from '../ag-pagination-table/olympic-data.interface';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-ag-filters-menu-table',
   templateUrl: './ag-filters-menu-table.component.html',
   styleUrls: ['./ag-filters-menu-table.component.scss']
 })
-export class AgFiltersMenuTableComponent {
-  public columnDefs: ColDef[] = [
-    { field: 'athlete', filter: 'agTextColumnFilter', minWidth: 200 },
+export class AgFiltersMenuTableComponent implements OnInit {
+  columnsList: ColDef[] = [
+    { field: 'athlete', minWidth: 200 },
     { field: 'age' },
-    { field: 'country', minWidth: 180 },
+    { field: 'country' },
     { field: 'year' },
-    { field: 'date', minWidth: 150 },
+    { field: 'date' },
+    { field: 'gold' },
+    { field: 'silver' },
+    { field: 'bronze' },
+    { field: 'total' }
+  ];
+  columns = new FormControl(this.columnsList);
+
+  public columnDefs: ColDef[] = [
+    { field: 'athlete', minWidth: 200 },
+    { field: 'age' },
+    { field: 'country' },
+    { field: 'year' },
+    { field: 'date' },
     { field: 'gold' },
     { field: 'silver' },
     { field: 'bronze' },
@@ -38,6 +52,12 @@ export class AgFiltersMenuTableComponent {
   public rowData!: IOlympicData[];
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.columns.valueChanges.subscribe((selectChange: ColDef[] | null) => {
+      this.columnDefs = selectChange ?? this.columnDefs;
+    });
+  }
 
   onGridReady(params: GridReadyEvent<IOlympicData>) {
     this.http

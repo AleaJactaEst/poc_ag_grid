@@ -13,6 +13,15 @@
   >Get selected rows</button>
 </div>
 
+<mat-form-field>
+  <mat-label>Rows per page</mat-label>
+  <mat-select (selectionChange)="amountOfRows($event)">
+    <mat-option *ngFor="let rows of rowsPerPage" [value]="rows">
+      {{ rows }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
 <ag-grid-angular
   pagination
   style="width: 100%; height: 80%;"
@@ -30,4 +39,4 @@
 ></ag-grid-angular>
 
 <h2>List of selected rows:</h2>
-<pre>{{ selectedRows | json }}</pre>
+<pre [ngClass]="{ marginBottom: '12px' }">{{ selectedRows | json }}</pre>
