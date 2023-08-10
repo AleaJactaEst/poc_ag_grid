@@ -8,6 +8,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AgGridModule } from 'ag-grid-angular';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +42,8 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatCardModule,
+    MatSlideToggleModule,
     AgGridModule,
     ReactiveFormsModule,
     MatInputModule

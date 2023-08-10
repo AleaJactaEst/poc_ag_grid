@@ -101,11 +101,8 @@ export class AgPaginationTableComponent {
     this.gridApi.exportDataAsCsv();
   }
 
-  // this.gridApi.getSelectedNodes();
   getSelectedRows(): void {
-    console.log('this.gridApi.getSelectedNodes():', this.gridApi.getSelectedNodes());
-    this.selectedRows =this.gridApi.getSelectedNodes().map(rowNode => rowNode.data);
-    // console.log('this.selectedRows:', this.selectedRows.map(rowNode => rowNode.data));
+    this.selectedRows = this.gridApi.getSelectedNodes().map(rowNode => rowNode.data);
   }
 
   amountOfRows(amountOfRows: MatSelectChange) {
