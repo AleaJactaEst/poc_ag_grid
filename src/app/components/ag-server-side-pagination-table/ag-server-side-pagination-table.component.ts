@@ -98,9 +98,6 @@ export class AgServerSidePaginationTableComponent {
         const dataSource: IDatasource = {
           rowCount: undefined,
           getRows: (params: IGetRowsParams) => {
-            console.log(
-              'asking for ' + params.startRow + ' to ' + params.endRow
-            );
             // At this point in your code, you would call the server.
             // To make the demo look real, wait for 500ms before returning
             setTimeout(() => {

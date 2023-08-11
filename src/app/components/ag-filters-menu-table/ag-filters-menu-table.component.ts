@@ -6,6 +6,7 @@ import {
   ColGroupDef,
   GridReadyEvent,
 } from 'ag-grid-community';
+
 import { IOlympicData } from '../ag-pagination-table/olympic-data.interface';
 
 @Component({
@@ -15,7 +16,7 @@ import { IOlympicData } from '../ag-pagination-table/olympic-data.interface';
 })
 export class AgFiltersMenuTableComponent implements OnInit {
   groupColumnsControls = new FormGroup({});
-
+  columnDefsCopy!: ColGroupDef[];
 
   public columnDefs: ColGroupDef[] = [
     {
@@ -66,6 +67,7 @@ export class AgFiltersMenuTableComponent implements OnInit {
 
   ngOnInit() {
     this.initFormControls();
+    this.toggleColumnGroup();
   }
 
   initFormControls(): void {
@@ -73,11 +75,12 @@ export class AgFiltersMenuTableComponent implements OnInit {
       if (columnGroup.groupId) {
         this.groupColumnsControls.addControl(columnGroup.groupId, new FormGroup({
           subColumns: new FormControl(columnGroup.children),
-          checked: new FormControl(false)
+          checked: new FormControl(true)
         }));
       }
     });
-    console.log('this.groupColumnsControls:', this.groupColumnsControls);
+
+    this.groupColumnsControls.valueChanges.subscribe(() => this.toggleColumnGroup());
   }
 
   onGridReady(params: GridReadyEvent<IOlympicData>) {
@@ -88,21 +91,18 @@ export class AgFiltersMenuTableComponent implements OnInit {
       .subscribe((data) => (this.rowData = data));
   }
 
-  selectionChanged(subColumns: any, columnsGroupname: any): void {
-    console.log('subColumns.value:', subColumns.value);
-    console.log('columnsGroupname:', columnsGroupname);
-  }
-
-  getColumnGroup(groupId: string): any {
-    // this.columnDefs.find(columnGroup => columnGroup.headerName === groupName);
+  getColumnGroup(groupId: string): ColDef[] {
     return this.columnDefs.find(columnGroup => columnGroup.groupId === groupId)?.children ?? [];
   }
 
-  getSubColumns(columnName: string): any {
-
+  getSubColumns(columnName: string): FormGroup {
+    return this.groupColumnsControls.get(columnName) as FormGroup;
   }
 
-  toggleColumnGroup(info: string | undefined): void {
-    console.log('info:', info);
+  toggleColumnGroup(): void {
+    this.columnDefsCopy = JSON.parse(JSON.stringify(this.columnDefs)).filter((column: any) => {
+      column.children = this.getSubColumns(column.groupId ?? '')?.controls['subColumns'].value;
+      return this.getSubColumns(column.groupId ?? '')?.controls['checked'].value;
+    });
   }
 }
