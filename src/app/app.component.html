@@ -1,6 +1,9 @@
 <mat-sidenav-container class="content-container">
   <mat-sidenav mode="side" opened class="sidebar">
-    <h4 *ngFor="let item of menuItems"><a [routerLink]="item.path">{{ item.menuLink }}</a></h4>
+    <ng-container *ngFor="let item of menuItems; let i = index">
+      <h4><a [routerLink]="item.path">{{ item.menuLink }}</a></h4>
+      <hr *ngIf="i === menuItems.length - 2">
+    </ng-container>
   </mat-sidenav>
   <mat-sidenav-content class="main-content">
     <router-outlet></router-outlet>

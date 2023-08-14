@@ -14,5 +14,9 @@ export const AppConstants = {
   exoAgServerSidePaginationTable: {
     path: 'app-ag-server-side-pagination-table',
     menuLink: 'ServerSidePagination'
+  },
+  exoFinalResultTable: {
+    path: 'app-ag-final-result',
+    menuLink: 'FinalResultTable'
   }
 };

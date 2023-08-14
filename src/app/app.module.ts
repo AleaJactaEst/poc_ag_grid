@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
 import { AgGridModule } from 'ag-grid-angular';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,10 +19,10 @@ import {
   AgBasicTableComponent,
   AgPaginationTableComponent,
   AgServerSidePaginationTableComponent,
-  AgFiltersMenuTableComponent
+  AgFiltersMenuTableComponent,
+  AgFinalResultComponent,
+  CustomCellComponent
 } from './components';
-import { CustomCellComponent } from './components/custom-cell/custom-cell.component';
-import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MatInputModule } from '@angular/material/input';
     AgPaginationTableComponent,
     AgServerSidePaginationTableComponent,
     AgFiltersMenuTableComponent,
-    CustomCellComponent
+    CustomCellComponent,
+    AgFinalResultComponent
   ],
   imports: [
     BrowserModule,

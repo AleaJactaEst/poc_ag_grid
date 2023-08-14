@@ -9,6 +9,7 @@
   [defaultColDef]="defaultColDef"
   [rowData]="rowData$ | async"
   [rowSelection]="'multiple'"
+  [suppressDragLeaveHidesColumns]="true"
   [animateRows]="true"
   (gridReady)="onGridReady($event)"
   (cellClicked)="onCellClicked($event)"
