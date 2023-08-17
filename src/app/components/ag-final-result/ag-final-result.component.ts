@@ -1,24 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import {
-  ColDef, ColGroupDef,
+  ColDef,
+  ColGroupDef,
   GetRowIdFunc,
   GetRowIdParams,
+  GridApi,
   GridReadyEvent,
-  ICellRendererParams, IDatasource, IGetRowsParams,
-  RowModelType, SortModelItem
+  ICellRendererParams,
+  IDatasource,
+  IGetRowsParams,
+  RowModelType,
+  SortModelItem
 } from 'ag-grid-community';
 
 import { IOlympicData } from '../ag-pagination-table/olympic-data.interface';
-import { CountriesConstant } from '../ag-server-side-pagination-table/countries.constant';
 
 @Component({
-  selector: 'app-ag-ag-final-result',
+  selector: 'app-ag-final-result',
   templateUrl: './ag-final-result.component.html',
   styleUrls: ['./ag-final-result.component.scss']
 })
-export class AgFinalResultComponent {
-  filterParams = { values: CountriesConstant };
+export class AgFinalResultComponent implements OnInit {
+  rowsPerPage: number[] = [10, 20, 50, 100];
+  private gridApi!: GridApi;
+  groupColumnsControls = new FormGroup({});
+  columnDefsCopy!: ColGroupDef[];
 
   public columnDefs: ColGroupDef[] = [
     {
@@ -53,35 +62,25 @@ export class AgFinalResultComponent {
         },
         {
           field: 'age',
-          filter: true,
-          filterParams: {
-            filterOptions: ['equals', 'lessThan', 'greaterThan'],
-          },
         },
         {
           field: 'country',
-          filter: true,
-          filterParams: this.filterParams
         },
         {
           field: 'year',
-          filter: true,
-          filterParams: {
-            values: ['2000', '2004', '2008', '2012']
-          },
         },
-        { field: 'date' },
-        { field: 'sport' },
+        { field: 'date', filter: false },
+        { field: 'sport', filter: false },
       ]
     },
     {
       headerName: 'Sports Results',
       groupId: 'sportsResults',
       children: [
-        { field: 'gold' },
-        { field: 'silver' },
-        { field: 'bronze' },
-        { field: 'total' },
+        { field: 'gold', filter: false },
+        { field: 'silver', filter: false },
+        { field: 'bronze', filter: false },
+        { field: 'total', filter: false },
       ]
     }
   ];
@@ -107,6 +106,11 @@ export class AgFinalResultComponent {
   public rowData!: IOlympicData[];
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.initFormControls();
+    this.toggleColumnGroup();
+  }
 
   onGridReady(params: GridReadyEvent<IOlympicData>) {
     this.http
@@ -145,6 +149,20 @@ export class AgFinalResultComponent {
         };
         params.api!.setDatasource(dataSource);
       });
+    this.gridApi = params.api;
+  }
+
+  initFormControls(): void {
+    this.columnDefs.map((columnGroup: ColGroupDef) => {
+      if (columnGroup.groupId) {
+        this.groupColumnsControls.addControl(columnGroup.groupId, new FormGroup({
+          subColumns: new FormControl(columnGroup.children),
+          checked: new FormControl(true)
+        }));
+      }
+    });
+
+    this.groupColumnsControls.valueChanges.subscribe(() => this.toggleColumnGroup());
   }
 
   sortAndFilter(
@@ -182,6 +200,10 @@ export class AgFinalResultComponent {
       return 0;
     });
     return resultOfSort;
+  }
+
+  amountOfRows(amountOfRows: MatSelectChange) {
+    this.gridApi.paginationSetPageSize(Number(amountOfRows.value));
   }
 
   filterData(filterModel: any, data: any[]) {
@@ -226,5 +248,24 @@ export class AgFinalResultComponent {
       resultOfFilter.push(item);
     }
     return resultOfFilter;
+  }
+
+  getColumnGroup(groupId: string): ColDef[] {
+    return this.columnDefs.find(columnGroup => columnGroup.groupId === groupId)?.children ?? [];
+  }
+
+  getSubColumns(columnName: string): FormGroup {
+    return this.groupColumnsControls.get(columnName) as FormGroup;
+  }
+
+  toggleColumnGroup(): void {
+    this.columnDefsCopy = JSON.parse(JSON.stringify(this.columnDefs)).filter((column: any) => {
+      column.children = this.getSubColumns(column.groupId ?? '')?.controls['subColumns'].value;
+      return this.getSubColumns(column.groupId ?? '')?.controls['checked'].value;
+    });
+  }
+
+  onBtnExport(): void {
+    this.gridApi.exportDataAsCsv();
   }
 }

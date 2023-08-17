@@ -44,7 +44,7 @@ export class AgBasicTableComponent {
 
   // Example load data from server
   onGridReady(params: GridReadyEvent) {
-    console.log('params:', params);
+    console.log('onGridReady | params:', params);
     this.rowData$ = this.http
       .get<any[]>('https://www.ag-grid.com/example-assets/row-data.json');
     // params.api.sizeColumnsToFit();

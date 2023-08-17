@@ -95,6 +95,7 @@ export class AgPaginationTableComponent {
       )
       .subscribe((data) => (this.rowData = data));
     this.gridApi = params.api;
+    this.gridApi.setDomLayout('autoHeight');
   }
 
   onBtnExport(): void {
