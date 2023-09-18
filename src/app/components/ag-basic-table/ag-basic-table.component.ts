@@ -31,7 +31,7 @@ export class AgBasicTableComponent {
     sortable: true,
     resizable: true,
     flex: 1,
-    minWidth: 100,
+    minWidth: 100
   };
 
   // Data that gets displayed in the grid

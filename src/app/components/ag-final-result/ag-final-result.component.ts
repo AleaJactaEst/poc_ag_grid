@@ -5,6 +5,7 @@ import { MatSelectChange } from '@angular/material/select';
 import {
   ColDef,
   ColGroupDef,
+  DomLayoutType,
   GetRowIdFunc,
   GetRowIdParams,
   GridApi,
@@ -93,6 +94,7 @@ export class AgFinalResultComponent implements OnInit {
     resizable: true,
   };
 
+  public domLayout: DomLayoutType = 'autoHeight';
   public rowSelection: 'single' | 'multiple' = 'multiple';
   public rowModelType: RowModelType = 'infinite';
   public cacheBlockSize = 100;
